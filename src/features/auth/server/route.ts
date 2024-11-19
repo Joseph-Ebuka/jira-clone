@@ -10,6 +10,11 @@ import { loginSchema, registerSchema } from "../schemas";
 import { AUTH_COOKIE } from "../constants";
 
 const app = new Hono()
+  .get("/current", sessionMiddleware, async (c) => {
+    const user = await c.get("user");
+    return c.json(user);
+  })
+
   .post("/login", zValidator("json", loginSchema), async (c) => {
     const { email, password } = await c.req.valid("json");
 
