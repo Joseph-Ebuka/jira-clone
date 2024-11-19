@@ -1,9 +1,10 @@
 import { ID } from "node-appwrite";
 import { Hono } from "hono";
+import { deleteCookie, setCookie } from "hono/cookie";
 
 import { createAdminClient } from "@/lib/appwrite";
 import { zValidator } from "@hono/zod-validator";
-import { deleteCookie, setCookie } from "hono/cookie";
+import { sessionMiddleware } from "@/lib/sesssion-middleware";
 
 import { loginSchema, registerSchema } from "../schemas";
 import { AUTH_COOKIE } from "../constants";
@@ -50,12 +51,13 @@ const app = new Hono()
 
       return c.json({ success: true });
     } catch (error) {
-      console.error("Registration error:", error);
       return c.json({ error: error.message }, 500);
     }
   })
-  .post("/logout", (c) => {
+  .post("/logout", sessionMiddleware, async (c) => {
+    const account = c.get("account");
     deleteCookie(c, AUTH_COOKIE);
+    await account.deleteSession("current");
     return c.json({ success: true });
   });
 
