@@ -3,7 +3,7 @@ import { Hono } from "hono";
 
 import { createAdminClient } from "@/lib/appwrite";
 import { zValidator } from "@hono/zod-validator";
-import { setCookie } from "hono/cookie";
+import { deleteCookie, setCookie } from "hono/cookie";
 
 import { loginSchema, registerSchema } from "../schemas";
 import { AUTH_COOKIE } from "../constants";
@@ -35,7 +35,7 @@ const app = new Hono()
       const { account } = await createAdminClient();
 
       // Create user
-      const user = await account.create(ID.unique(), email, password, name);
+      await account.create(ID.unique(), email, password, name);
 
       // Create session
       const session = await account.createEmailPasswordSession(email, password);
@@ -48,11 +48,15 @@ const app = new Hono()
         maxAge: 60 * 60 * 24 * 30,
       });
 
-      return c.json({ data: user });
+      return c.json({ success: true });
     } catch (error) {
       console.error("Registration error:", error);
       return c.json({ error: error.message }, 500);
     }
+  })
+  .post("/logout", (c) => {
+    deleteCookie(c, AUTH_COOKIE);
+    return c.json({ success: true });
   });
 
 export default app;
