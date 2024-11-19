@@ -27,21 +27,32 @@ const app = new Hono()
     return c.json({ success: true });
   })
   .post("/register", zValidator("json", registerSchema), async (c) => {
-    const { name, email, password } = await c.req.valid("json");
+    try {
+      const { name, email, password } = await c.req.valid("json");
 
-    const { account } = await createAdminClient();
-    await account.create(ID.unique(), name, email, password);
+      console.log("Received registration request:", { name, email, password });
 
-    const session = await account.createEmailPasswordSession(email, password);
-    setCookie(c, AUTH_COOKIE, session.secret, {
-      path: "/",
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      maxAge: 60 * 60 * 24 * 30,
-    });
+      const { account } = await createAdminClient();
 
-    return c.json({ success: true });
+      // Create user
+      const user = await account.create(ID.unique(), email, password, name);
+
+      // Create session
+      const session = await account.createEmailPasswordSession(email, password);
+
+      setCookie(c, AUTH_COOKIE, session.secret, {
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 60 * 60 * 24 * 30,
+      });
+
+      return c.json({ data: user });
+    } catch (error) {
+      console.error("Registration error:", error);
+      return c.json({ error: error.message }, 500);
+    }
   });
 
 export default app;
