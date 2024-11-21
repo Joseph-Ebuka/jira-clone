@@ -36,8 +36,6 @@ const app = new Hono()
     try {
       const { name, email, password } = await c.req.valid("json");
 
-      console.log("Received registration request:", { name, email, password });
-
       const { account } = await createAdminClient();
 
       // Create user
