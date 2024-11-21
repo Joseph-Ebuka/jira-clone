@@ -1,11 +1,15 @@
+"use client";
+
 import { z } from "zod";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
 import { DottedSeperator } from "@/components/dotted-seperator";
 import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import {
   Card,
   CardContent,
@@ -21,7 +25,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { registerSchema } from "../schemas";
 import { useRegister } from "../api/use-register";
 
@@ -113,7 +117,7 @@ export const SignUpCard = () => {
               )}
             />
             <Button disabled={false} size="lg" className="w-full">
-              Login
+              Register
             </Button>
           </form>
         </Form>
