@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import  Link  from "next/link";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -18,7 +18,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         <nav className="flex justify-between items-center">
           <Image src="/logo.svg" alt="logo" width={152} height={56} />
           <Button asChild variant="secondary">
-          <Link href={isSignin ? "/sign-up" : "/sign-in"}>
+            <Link href={isSignin ? "/sign-up" : "/sign-in"}>
               {isSignin ? "Sign Up" : "Login"}
             </Link>
           </Button>
