@@ -1,4 +1,5 @@
 import { UserButton } from "@/features/auth/components/user-button";
+import { MobileSideBar } from "./mobile-sidebar";
 
 export const Navbar = () => {
   return (
@@ -7,9 +8,10 @@ export const Navbar = () => {
         <h1 className="text-2xl font-semibold">Home</h1>
         <p className="text-muted-foreground">
           {" "}
-          Monitor all of your projects and taks{" "}
+          Monitor all of your projects and tasks{" "}
         </p>
       </div>
+      <MobileSideBar />
       <UserButton />
     </nav>
   );
