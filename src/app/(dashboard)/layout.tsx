@@ -1,6 +1,12 @@
+import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+
+interface DashboardLayoutProps {
+  children: React.ReactNode
+}
+
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
     <div className="min-h-screen ">
       <div className="flex w-full h-full">
@@ -9,7 +15,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         </div>
         <div className="lg:pl-[264px]">
           <div className="mx-auto max-w-screen-2xl h-full">
-            {/* TODO: Navbar */}
+            <Navbar/>
             <main className="h-full py-8 px-6 flex flex-col">{children}</main>
           </div>
         </div>
@@ -17,4 +23,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     </div>
   );
 };
+
 export default DashboardLayout;
+
