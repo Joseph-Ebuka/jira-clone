@@ -1,6 +1,7 @@
 "use client";
 
 import z from "zod";
+import {useRef} from "react"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { createWorkspaceSchema } from "../schema";
@@ -16,13 +17,18 @@ import {
 import { DottedSeperator } from "@/components/dotted-seperator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { userCreateWorkSpace } from "../api/use-create-workspace";
+import { useCreateWorkSpace } from "../api/use-create-workspace";
+
+
+
+
 interface CreateWorkSpaceFormProps {
   onCancel?: () => void;
 }
 
 export const CreateWorkSpaceForm = ({ onCancel }: CreateWorkSpaceFormProps) => {
-  const { mutate, isPending } = userCreateWorkSpace();
+  const { mutate, isPending } = useCreateWorkSpace();
+  const inputRef = useRef(null)
   const form = useForm<z.infer<typeof createWorkspaceSchema>>({
     resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
